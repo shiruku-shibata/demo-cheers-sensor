@@ -1,0 +1,2 @@
+# demo-cheers-sensor
+乾杯のセンサー用リポジトリのデモ．開発環境はPlatformIOをVScodeの拡張機能で使用．
