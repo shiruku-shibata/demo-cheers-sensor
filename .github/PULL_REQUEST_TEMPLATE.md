@@ -1,168 +1,46 @@
-# プロジェクト名
+## 概要
 
-> プロジェクトの概要をここに記述してください。
+<!-- 変更内容を簡潔に説明してください -->
 
----
+## 関連Issue
 
-## 目次
+<!-- 関連するIssue番号を記載してください -->
+closes #
 
-- [開発環境](#開発環境)
-- [セットアップ](#セットアップ)
-- [ブランチ戦略（Git Flow）](#ブランチ戦略git-flow)
-- [開発フロー](#開発フロー)
-- [ディレクトリ構成](#ディレクトリ構成)
+## 変更の種類
 
----
+<!-- 該当するものに x を入れてください -->
 
-## 開発環境
+- [ ] `feature` : 新機能の追加
+- [ ] `bugfix` : バグ修正
+- [ ] `hotfix` : 緊急修正
+- [ ] `release` : リリース準備
+- [ ] `docs` : ドキュメントのみの変更
+- [ ] `refactor` : リファクタリング
 
-| ツール | バージョン |
-|--------|-----------|
-| VSCode | 最新版推奨 |
-| PlatformIO IDE (VSCode拡張) | 最新版推奨 |
-| Git | 2.x 以上 |
+## マージ先ブランチ
 
-### 必要な VSCode 拡張機能
+<!-- マージ先が正しいか確認してください -->
 
-- [PlatformIO IDE](https://marketplace.visualstudio.com/items?itemName=platformio.platformio-ide)
+- [ ] `develop`（feature / bugfix の場合）
+- [ ] `master` と `develop`（release / hotfix の場合）
 
----
+## 変更内容の詳細
 
-## セットアップ
+<!-- 何をどのように変更したか、背景や理由も含めて記述してください -->
 
-### 1. リポジトリのクローン
+## 動作確認
 
-```bash
-git clone <リポジトリURL>
-cd <プロジェクト名>
-```
+<!-- 実機またはシミュレータで確認した内容を記載してください -->
 
-### 2. developブランチに切り替え
+- [ ] ビルド成功（`PlatformIO: Build` でエラーなし）
+- [ ] 実機への書き込み確認（`PlatformIO: Upload`）
+- [ ] 想定どおりの動作を確認した
 
-```bash
-git checkout develop
-```
+## レビュー時の注意点
 
-### 3. VSCode でプロジェクトを開く
+<!-- レビュアーに特に見てほしい点や補足があれば記載してください -->
 
-VSCode を起動し、PlatformIO のホーム画面から `Open Project` でクローンしたフォルダを開いてください。
+## スクリーンショット・ログ（任意）
 
-依存ライブラリは PlatformIO が `platformio.ini` をもとに自動でインストールします。
-
----
-
-## ブランチ戦略（Git Flow）
-
-このリポジトリは **Git Flow** を採用しています。
-
-```
-master
-  └── develop
-        └── feat/xxx      （新機能）
-        └── fix/xxx       （バグ修正）
-        └── release/x.x.x （リリース準備）
-              └── (master へマージ後タグ付け)
-  └── hotfix/xxx          （緊急修正）
-```
-
-### ブランチ命名規則
-
-| プレフィックス | 用途 | 例 |
-|----------------|------|----|
-| `feat/` | 新機能の追加 | `feat/add-led-control` |
-| `fix/` | バグ修正 | `fix/uart-timeout` |
-| `release/` | リリース準備 | `release/1.0.0` |
-| `hotfix/` | 本番の緊急修正 | `hotfix/fix-watchdog` |
-
-### 各ブランチの役割
-
-| ブランチ | 役割 |
-|----------|------|
-| `master` | リリース済みの安定版。直接コミット禁止。タグで管理。 |
-| `develop` | 開発の最新版。feat / fix ブランチをここにマージする。 |
-| `feat/xxx` | 機能追加用。`develop` から派生し `develop` へ戻す。 |
-| `fix/xxx` | バグ修正用。`develop` から派生し `develop` へ戻す。 |
-| `release/x.x.x` | リリース前の最終調整用。`develop` から派生し `master` と `develop` へマージ。 |
-| `hotfix/xxx` | 本番の緊急修正用。`master` から派生し `master` と `develop` へマージ。 |
-
----
-
-## 開発フロー
-
-### 新機能を追加する場合
-
-```bash
-git checkout develop
-git checkout -b feat/機能名
-
-git add .
-git commit -m "feat: 機能の説明"
-
-git checkout develop
-git merge feat/機能名
-git branch -d feat/機能名
-```
-
-### バグ修正を行う場合
-
-```bash
-git checkout develop
-git checkout -b fix/バグ内容
-
-git add .
-git commit -m "fix: 修正内容の説明"
-
-git checkout develop
-git merge fix/バグ内容
-git branch -d fix/バグ内容
-```
-
-### リリースする場合
-
-```bash
-# developからreleaseブランチを作成
-git checkout develop
-git checkout -b release/1.0.0
-
-# 最終調整後、masterとdevelopへマージ
-git checkout master
-git merge release/1.0.0
-git tag -a v1.0.0 -m "Release v1.0.0"
-
-git checkout develop
-git merge release/1.0.0
-```
-
-### 緊急修正（hotfix）の場合
-
-```bash
-# masterから派生
-git checkout master
-git checkout -b hotfix/修正内容
-
-# 修正後、masterとdevelopへマージ
-git checkout master
-git merge hotfix/修正内容
-git tag -a v1.0.1 -m "Hotfix v1.0.1"
-
-git checkout develop
-git merge hotfix/修正内容
-```
-
----
-
-## ディレクトリ構成
-
-```
-.
-├── src/                  # ソースコード
-│   └── main.cpp
-├── include/              # ヘッダーファイル
-├── lib/                  # プロジェクト固有ライブラリ
-├── test/                 # テストコード
-├── platformio.ini        # PlatformIO設定ファイル
-├── .gitignore            # PlatformIOが自動生成
-└── README.md
-```
-
-> `.pio/` ディレクトリ（ビルド成果物）は `.gitignore` により自動的にバージョン管理から除外されます。
+<!-- シリアルモニタのログや動作確認の様子があれば貼り付けてください -->
