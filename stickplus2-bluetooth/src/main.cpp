@@ -1,18 +1,26 @@
-#include <Arduino.h>
+#include <M5StickCPlus2.h>
+#include "BluetoothSerial.h"
 
-// put function declarations here:
-int myFunction(int, int);
+byte counter;
+BluetoothSerial bts;
 
 void setup() {
-  // put your setup code here, to run once:
-  int result = myFunction(2, 3);
+  auto cfg = M5.config();
+  M5.begin(cfg);
+
+  M5.Display.clear();
+  M5.Display.setTextSize(2);
+  M5.Display.setCursor(0, 0);
+  M5.Display.println("Bluetooth Now");
+
+  Serial.begin(9600);
+  bts.begin("M5StickCPlus2"); // PC側で表示されるBluetooth名
+
+  counter = 0;
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
-}
-
-// put function definitions here:
-int myFunction(int x, int y) {
-  return x + y;
+  bts.println(counter);
+  counter++;
+  delay(100);
 }
